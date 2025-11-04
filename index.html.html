@@ -1,0 +1,992 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fundamentos de Programación en Python | Guía para Principiantes</title>
+<meta name="description" content="Guía educativa de programación en Python para principiantes, inspirada en el ambiente oscuro de The Dark Knight y en la precisión de la Fórmula 1. Incluye glosario interactivo, ejemplos sencillos y ejercicios didácticos.">
+<style>
+/* ========== THEME (Dark Knight-inspired, oscuro y cinematográfico) ========== */
+:root{
+  /* Colores inspirados en The Dark Knight: azules profundos, negro intenso y acentos dorados */
+  --red:#0a1730;
+  --red-dark:#020c1b;
+  --mid:#122444;
+  --bg:#010610;
+  --ink:#d9d9e3;
+  --muted:#8892b0;
+  --line:#1d334a;
+  --tile:#091b2d;
+  --yellow:#f2bf27;
+  --blue:#1e2a47;
+  --green:#2ecc71;
+  --orange:#d9822b;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;line-height:1.6}
+a{color:inherit;text-decoration:none}
+.container{max-width:1240px;margin:0 auto;padding:0 22px}
+/* NAV */
+.nav{position:sticky;top:0;z-index:1000;background:rgba(10,10,10,.88);backdrop-filter:saturate(1.1) blur(10px);border-bottom:1px solid var(--line)}
+.nav .inner{display:flex;align-items:center;gap:16px;padding:12px 0}
+.brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.badge-logo{width:20px;height:20px;border-radius:4px;background:linear-gradient(135deg,var(--red),var(--red-dark));box-shadow:0 0 0 2px #fff inset}
+.navlinks{margin-left:auto;display:flex;flex-wrap:wrap;gap:8px}
+.navlinks a{padding:8px 10px;border-radius:8px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#ddd}
+.navlinks a.active, .navlinks a:hover{background:#171717;color:#fff}
+/* HERO */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero .canvas{position:absolute;inset:0;opacity:.35;pointer-events:none}
+.hero .wrap{padding:100px 0 72px 0;text-align:center}
+  /* Ilustración semitransparente: un monoplaza de F1 de fondo (archivo local) */
+.hero::before{
+  content:"";
+  position:absolute;
+  bottom:-20px;
+  left:50%;
+  width:80%;
+  max-width:600px;
+  height:180px;
+  background-image:none;
+  background-size:contain;
+  background-repeat:no-repeat;
+  opacity:0.07;
+  transform:translateX(-50%);
+  pointer-events:none;
+}
+.kicker{display:inline-block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#eee;background:#121212;border:1px solid #232323;border-radius:999px;padding:6px 10px}
+.title{font-size:clamp(34px,5vw,70px);line-height:1.05;margin:12px 0 8px 0;font-weight:900;letter-spacing:.01em}
+.subtitle{max-width:920px;margin:0 auto;color:#d6d7dc}
+.cta{display:inline-block;margin-top:22px;background:linear-gradient(90deg,var(--red),var(--red-dark));color:#fff;font-weight:800;padding:14px 22px;border-radius:999px;box-shadow:0 8px 26px rgba(217,4,41,.35);transition:transform .15s ease}
+.cta:hover{transform:translateY(-1px)}
+
+/* botones pequeños para acertijos */
+.cta-small{display:inline-block;margin-top:12px;background:var(--red);color:#fff;font-weight:700;padding:8px 14px;border-radius:999px;box-shadow:0 4px 14px rgba(217,4,41,.3);font-size:14px;cursor:pointer;transition:transform .15s ease}
+.cta-small:hover{transform:translateY(-1px)}
+.chips{margin-top:12px}
+.chip{display:inline-block;background:#151515;border:1px solid #232323;border-radius:999px;padding:5px 10px;font-size:12px;margin:4px 6px 0 0}
+/* LAYOUT */
+.section{padding:70px 0;border-bottom:1px solid var(--line)}
+h2{font-size:clamp(22px,3vw,36px);margin:0 0 12px 0;letter-spacing:.02em}
+h3{margin:10px 0 8px 0}
+.sub{color:#bcbfc9}
+.grid{display:grid;gap:22px}
+.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:1000px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+.card{background:var(--tile);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.card .pad{padding:18px}
+.ribbon{height:6px;background:linear-gradient(90deg,var(--red),var(--red-dark))}
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{border:1px solid #2d2d2d;padding:10px;vertical-align:top}
+th{background:#151515}
+/* CODE */
+.code{position:relative;background:#0e0e10;border:1px solid #1a1a1e;border-radius:12px;padding:14px;overflow:auto}
+.code .lang{position:absolute;top:6px;right:10px;font-size:11px;color:#999}
+.copy{position:absolute;top:6px;left:10px;font-size:11px;border:1px solid #2a2a2e;border-radius:8px;padding:4px 8px;background:#151516;color:#cfcfd6;cursor:pointer}
+.hl .kw{color:#4ea3ff}.hl .fn{color:#ffd479}.hl .cm{color:#7a7f92}.hl .st{color:#9bffb0}
+/* TOC (ÍNDICE lateral) */
+.toc{position:sticky;top:72px;align-self:start;background:#0d0d0d;border:1px solid #1e1e1e;border-radius:14px;padding:12px}
+.toc h4{margin:0 0 6px 0;font-size:12px;color:#cfd2d9;letter-spacing:.1em;text-transform:uppercase}
+.toc a{display:block;padding:6px 8px;border-radius:8px;color:#cfd2d9;font-size:14px}
+.toc a:hover,.toc a.active{background:#151515}
+/* CALLOUTS */
+.callout{border-left:4px solid var(--red);background:#141414;border:1px solid #212121;border-radius:10px;padding:12px 14px}
+.f1{border-left-color:var(--yellow)} .bat{border-left-color:var(--blue)}
+.note{color:#d2d2d7;font-style:italic}
+
+/* === Added for improved interaction and imagery === */
+/* Highlights for search results */
+mark{
+  background:var(--yellow);
+  color:#0b0b0b;
+  padding:2px 4px;
+  border-radius:3px;
+}
+/* Classes for project and icon images removed */
+/* GLOSARIO chips */
+.gloss-chip{display:inline-block;border:1px solid #2a2a2e;border-radius:999px;padding:4px 10px;background:#121212;font-size:12px;margin:4px 6px 0 0}
+/* QUIZ section styles */
+.quiz-question{margin-bottom:24px;}
+.quiz-options label{display:block;margin:4px 0;cursor:pointer;}
+.quiz-result{margin-top:16px;font-size:18px;font-weight:700;color:var(--yellow);}
+/* Estilos para entradas y selectores de ejercicios interactivos */
+.interactive-input,
+.interactive-select{
+  display:block;
+  width:100%;
+  padding:6px 10px;
+  margin-top:6px;
+  border-radius:8px;
+  border:1px solid #2a2a2e;
+  background:#121212;
+  color:var(--ink);
+  font-size:15px;
+}
+/* FOOTER */
+.footer{padding:60px 0;text-align:center;color:#b9b9c1}
+.credits{font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+/* Additional footer styling */
+.footer-info{
+  font-size:14px;
+  margin-bottom:10px;
+}
+/* .logo-upq removed */
+/* UTIL */
+hr.gradient{height:1px;border:0;background:linear-gradient(90deg,transparent,var(--red),transparent);margin:24px 0}
+kbd{border:1px solid #2a3041;border-radius:6px;padding:2px 6px;background:#0f1422;font-size:12px;color:#cfd2dd}
+/* SEARCH BAR */
+/* Search bar styles removed */
+/* PRINT */
+@media print{.nav,.toc,.cta{display:none}.section{padding:28px 0}body{background:#fff;color:#000}.card{border-color:#ccc}}
+</style>
+</head>
+<body>
+<!-- NAV -->
+<header class="nav">
+  <div class="container inner">
+    <div class="brand"><span class="badge-logo"></span> Python · Datos · IA</div>
+    <nav class="navlinks" id="top-nav">
+      <a href="#inicio">Inicio</a>
+      <a href="#paradigmas">Paradigmas</a>
+      <a href="#estructurada">Estructurada</a>
+      <a href="#poo">POO</a>
+      <a href="#librerias">Librerías</a>
+      <a href="#ejercicios">Ejercicios</a>
+      <a href="#manual">Supervivencia</a>
+      <a href="#glosario">Glosario</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#acertijos">Acertijos</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#creditos">Créditos</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="inicio" class="hero">
+  <svg class="canvas" viewBox="0 0 1440 520" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#0a1730"/><stop offset="1" stop-color="#010610"/></linearGradient></defs>
+    <rect x="0" y="0" width="1440" height="520" fill="url(#g)"/>
+    <g stroke="#ffffff" opacity=".08">
+      <path d="M0,420 C320,260 520,320 720,300 C960,275 1200,240 1440,280 L1440,520 L0,520 Z" fill="#000"/>
+      <path d="M0,360 C320,200 560,260 760,240 C1000,215 1200,200 1440,240" fill="none" stroke-width="4"/>
+    </g>
+  </svg>
+  <div class="wrap container">
+    <!-- Kicker removed for a cleaner look -->
+    <h1 class="title">Fundamentos de Programación en Python</h1>
+    <p class="subtitle">Esta guía te llevará paso a paso por los fundamentos de programación en Python. Con la oscuridad y determinación de <strong>The&nbsp;Dark&nbsp;Knight</strong>, y la precisión de la <strong>Fórmula&nbsp;1</strong>, conceptos como variables, bucles, funciones y clases serán accesibles y atractivos para cualquier principiante.</p>
+    <a class="cta" href="#paradigmas">Empezar</a>
+    <div class="chips"><span class="chip">#Python</span><span class="chip">#Datos</span><span class="chip">#IA</span><span class="chip">#Tkinter</span><span class="chip">#Pygame</span></div>
+  </div>
+</section>
+
+<!-- MAIN LAYOUT: TOC + CONTENT -->
+<section class="section">
+  <div class="container" style="display:grid;grid-template-columns:260px 1fr;gap:24px">
+    <aside class="toc" id="toc">
+      <h4>Índice</h4>
+      <a href="#paradigmas">1. Paradigmas</a>
+      <a href="#estructurada">2. Programación estructurada</a>
+      <a href="#poo">3. POO</a>
+      <a href="#librerias">4. Librerías para Datos e IA</a>
+      <a href="#ejercicios">5. Ejercicios: Tkinter & Pygame</a>
+      <a href="#manual">6. Supervivencia académica</a>
+      <a href="#glosario">7. Glosario</a>
+      <a href="#proyectos">8. Proyectos de Datos e IA</a>
+      <a href="#acertijos">9. Acertijos interactivos</a>
+      <a href="#quiz">10. Quiz interactivo</a>
+      <a href="#creditos">11. Conclusión y créditos</a>
+      <hr class="gradient">
+      <!-- Search bar removed -->
+    </aside>
+
+    <div id="content">
+
+      <!-- PARADIGMAS -->
+      <section id="paradigmas" class="section" style="padding-top:0">
+        <h2>1) Paradigmas de programación</h2>
+        <p class="sub">Elegir el paradigma es como elegir el compuesto de neumáticos en F1: depende del clima, de la pista y de tu estrategia. En Batman, es elegir entre el Batimóvil o la Batimoto para una persecución específica.</p>
+
+        <div class="grid grid-3" style="margin-top:18px">
+          <article class="card"><div class="ribbon"></div><div class="pad">
+            <h3>Imperativo</h3><p>Instrucciones paso a paso (tú controlas cada curva).</p>
+            <div class="code"><button class="copy" onclick="copyCode(this)">Copiar</button><span class="lang">Python</span>
+<pre class="hl">
+<span class="kw">total</span> = 0
+<span class="kw">for</span> n <span class="kw">in</span> [1,2,3,4]:
+    total += n
+print(total)
+</pre></div>
+          </div></article>
+
+          <article class="card"><div class="ribbon"></div><div class="pad">
+            <h3>Declarativo</h3><p>Dices el <em>qué</em>, la máquina resuelve el <em>cómo</em> (como pedir telemetría procesada al ingeniero de pista).</p>
+            <div class="code"><button class="copy" onclick="copyCode(this)">Copiar</button><span class="lang">Python</span>
+<pre class="hl">
+nums = [1,2,3,4]
+print(sum(nums))  <span class="cm"># intención, no detalles</span>
+</pre></div>
+          </div></article>
+
+          <article class="card"><div class="ribbon"></div><div class="pad">
+            <h3>Funcional</h3><p>Funciones puras, composición y menos efectos colaterales (como módulos aerodinámicos: cada pieza suma sin interferir).</p>
+            <div class="code"><button class="copy" onclick="copyCode(this)">Copiar</button><span class="lang">Python</span>
+<pre class="hl">
+<span class="kw">from</span> functools <span class="kw">import</span> reduce
+nums=[1,2,3,4]
+print(reduce(<span class="kw">lambda</span> a,b: a+b, nums))
+</pre></div>
+          </div></article>
+        </div>
+
+        <hr class="gradient">
+        <div class="grid grid-2">
+          <div class="card"><div class="pad">
+            <h3>Comparativa rápida</h3>
+            <table>
+              <thead><tr><th>Paradigma</th><th>Ventajas</th><th>Riesgos</th><th>Python</th></tr></thead>
+              <tbody>
+                <tr><td>Imperativo</td><td>Control total</td><td>Boilerplate</td><td><code>for</code>, <code>if</code>, <code>while</code></td></tr>
+                <tr><td>Declarativo</td><td>Menos código repetido</td><td>Menos control fino</td><td>Comprehensions, <code>sum</code>, DSLs</td></tr>
+                <tr><td>Funcional</td><td>Pruebas fáciles, composición</td><td>Curva de hábito</td><td><code>map</code>, <code>filter</code>, <code>lambda</code></td></tr>
+                <tr><td>OOP</td><td>Reuso y modularidad</td><td>Sobre‑diseño</td><td><code>class</code>, <code>@property</code>, <code>abc</code></td></tr>
+              </tbody>
+            </table>
+          </div></div>
+          <div class="card"><div class="pad">
+            <h3>Herramientas: IDEs, kernels y aplicaciones</h3>
+            <p><strong>IDEs más populares:</strong></p>
+            <ul>
+              <li><strong>VS&nbsp;Code:</strong> un entorno versátil con extensiones, linters y depurador integrado para escribir y probar código rápidamente.</li>
+              <li><strong>PyCharm:</strong> especializado en proyectos grandes y de desarrollo web; ofrece análisis de código profundo y soporte para frameworks como&nbsp;Django y&nbsp;Flask.</li>
+              <li><strong>Jupyter&nbsp;Notebooks/Lab:</strong> interfaz interactiva basada en celdas, fundamental en ciencia de datos e inteligencia artificial.</li>
+            </ul>
+            <p><strong>Relación con los kernels:</strong> el IDE actúa como la carrocería y el <em>kernel</em> como el motor que ejecuta tus instrucciones. En Jupyter puedes seleccionar un kernel de&nbsp;Python, R o Julia; el cuaderno es la interfaz y el kernel procesa el código.</p>
+            <p><strong>Relación con aplicaciones:</strong> VS&nbsp;Code y&nbsp;PyCharm permiten construir aplicaciones reales —por ejemplo, servicios web con&nbsp;Flask o&nbsp;Django— gracias a sus herramientas de depuración y gestión de proyectos. Jupyter se emplea para análisis exploratorio y prototipado de modelos de datos e&nbsp;IA que luego se migran a scripts o servicios para producción.</p>
+            <div class="callout f1"><strong>F1:</strong> VS&nbsp;Code y&nbsp;PyCharm son como el box donde se ajusta el monoplaza; el kernel es el motor que ruge bajo el capó.</div>
+          </div></div>
+        </div>
+      </section>
+
+      <!-- ESTRUCTURADA -->
+      <section id="estructurada" class="section">
+        <h2>2) Programación estructurada en Python</h2>
+        <p class="sub">Divide y vencerás: como el plan de Gotham para vigilar barrios por sectores. Comienza con <strong>estructuras de datos</strong>, <strong>control</strong> y <strong>repetición</strong>, y domina <strong>funciones</strong> y <strong>pruebas</strong>.</p>
+
+        <div class="grid grid-4">
+          <article class="card"><div class="ribbon"></div><div class="pad"><h3>Estructuras de datos</h3><ul>
+            <li><strong>Listas</strong>, <strong>tuplas</strong></li>
+            <li><strong>Diccionarios</strong> (clave→valor)</li>
+            <li><strong>Conjuntos</strong> (sin duplicados)</li>
+          </ul></div></article>
+          <article class="card"><div class="ribbon"></div><div class="pad"><h3>Control</h3><ul>
+            <li><code>if/elif/else</code>, <code>match/case</code> (3.10+)</li>
+            <li><code>try/except/finally</code></li>
+          </ul></div></article>
+          <article class="card"><div class="ribbon"></div><div class="pad"><h3>Repetición</h3><ul>
+            <li><code>for</code>, <code>while</code></li>
+            <li>Comprehensions</li>
+            <li>Generadores (<code>yield</code>)</li>
+          </ul></div></article>
+          <article class="card"><div class="ribbon"></div><div class="pad"><h3>Funciones</h3><ul>
+            <li>Parámetros y retorno</li>
+            <li>Ámbito y docstrings</li>
+            <li>Pruebas con <code>assert</code></li>
+          </ul></div></article>
+        </div>
+
+        <div class="grid grid-2" style="margin-top:18px">
+          <article class="card"><div class="pad">
+            <h3>Menú con <code>match/case</code></h3>
+            <div class="code"><button class="copy" onclick="copyCode(this)">Copiar</button><span class="lang">Python</span>
+<pre class="hl">
+<span class="kw">def</span> <span class="fn">menu</span>():
+    <span class="kw">while True</span>:
+        print(<span class="st">"1) Sumar  2) Restar  3) Salir"</span>)
+        op = input(<span class="st">"Opción: "</span>)
+        <span class="kw">match</span> op:
+            <span class="kw">case</span> <span class="st">"1"</span>:
+                a,b = <span class="kw">map</span>(int, input(<span class="st">"a b: "</span>).split())
+                print(a+b)
+            <span class="kw">case</span> <span class="st">"2"</span>:
+                a,b = <span class="kw">map</span>(int, input(<span class="st">"a b: "</span>).split())
+                print(a-b)
+            <span class="kw">case</span> <span class="st">"3"</span>: <span class="kw">break</span>
+            <span class="kw">case</span> _: print(<span class="st">"No válida"</span>)
+<span class="fn">menu</span>()
+</pre></div>
+            <div class="callout bat"><strong>Batman:</strong> El menú es como la pared de la Baticueva: eliges la herramienta, no la improvisas.</div>
+          </div></article>
+          <article class="card"><div class="pad">
+            <h3>Funciones + pruebas rápidas</h3>
+            <div class="code"><button class="copy" onclick="copyCode(this)">Copiar</button><span class="lang">Python</span>
+<pre class="hl">
+<span class="kw">def</span> <span class="fn">promedio</span>(xs): <span class="kw">return</span> sum(xs)/len(xs)
+<span class="kw">assert</span> <span class="fn">promedio</span>([10,10,8]) == 9.<span class="kw">0</span>
+print(<span class="st">"OK"</span>)
+</pre></div>
+            <!-- Comentario eliminado para mantener narrativa fluida -->
+          </div></article>
+        </div>
+      </section>
+
+      <!-- POO -->
+      <section id="poo" class="section">
+        <h2>3) Programación orientada a objetos (POO)</h2>
+        <p class="sub">La POO organiza el equipo: <em>clases</em> (chasis), <em>objetos</em> (monoplazas), <em>métodos</em> (acciones), <em>atributos</em> (setup), <em>herencia</em> (familia de componentes) y <em>encapsulamiento</em> (acceso controlado).</p>
+
+        <div class="grid grid-3">
+          <article class="card"><div class="ribbon"></div><div class="pad"><h3>Clases y objetos</h3><p>Molde y ejemplares. Estado + comportamiento. Single-responsibility: cada clase debe ganar su propio sector del circuito.</p></div></article>
+          <article class="card"><div class="ribbon"></div><div class="pad"><h3>Encapsulamiento</h3><p>Controla acceso con <code>_privado</code> y <code>@property</code>. Evita que cualquiera toque el alerón sin permiso.</p></div></article>
+          <article class="card"><div class="ribbon"></div><div class="pad"><h3>Herencia & composición</h3><p>Reutiliza base o ensambla piezas. “Tiene‑un” y “es‑un” como módulos aerodinámicos.</p></div></article>
+        </div>
+
+        <div class="grid grid-3" style="margin-top:18px">
+          <article class="card"><div class="pad">
+            <h3>Herencia: extender un vehículo</h3>
+            <p>La herencia permite que una clase hija aproveche y amplíe el código de una clase padre. Como un monoplaza&nbsp;F1 que parte de un chasis base y le añade mejoras aerodinámicas.</p>
+            <div class="code"><button class="copy" onclick="copyCode(this)">Copiar</button><span class="lang">Python</span>
+<pre class="hl">
+<span class="kw">class</span> <span class="fn">Vehiculo</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, marca):
+        self.marca = marca
+    <span class="kw">def</span> <span class="fn">acelerar</span>(self):
+        print(<span class="st">"Acelerando..."</span>)
+
+<span class="kw">class</span> <span class="fn">CocheF1</span>(Vehiculo):
+    <span class="kw">def</span> <span class="fn">activar_drs</span>(self):
+        print(<span class="st">"DRS activado"</span>)
+
+auto = <span class="fn">CocheF1</span>(<span class="st">"Ferrari"</span>)
+auto.acelerar()
+auto.activar_drs()
+</pre></div>
+            <div class="callout f1"><strong>F1:</strong> La clase base es el chasis; la subclase añade alerones y DRS.</div>
+          </div></article>
+          <article class="card"><div class="pad">
+            <h3>Encapsulamiento: proteger atributos</h3>
+            <p>El encapsulamiento oculta detalles internos y proporciona métodos seguros para acceder a ellos. Esto evita daños accidentales — como no tocar el motor sin permiso.</p>
+            <div class="code"><button class="copy" onclick="copyCode(this)">Copiar</button><span class="lang">Python</span>
+<pre class="hl">
+<span class="kw">class</span> <span class="fn">Motor</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self):
+        self._rpm = 0
+        self.__temperatura = 90
+
+    <span class="kw">def</span> <span class="fn">encender</span>(self):
+        self._rpm = 1000
+
+    <span class="kw">@property</span>
+    <span class="kw">def</span> <span class="fn">temperatura</span>(self):
+        <span class="kw">return</span> self.__temperatura
+
+    <span class="kw">@temperatura.setter</span>
+    <span class="kw">def</span> <span class="fn">temperatura</span>(self, valor):
+        <span class="kw">if</span> 60 &lt; valor &lt; 130:
+            self.__temperatura = valor
+</pre></div>
+            <div class="callout bat"><strong>Batman:</strong> Usa getters/setters como contraseña de la Baticueva: solo abre cuando la temperatura es segura.</div>
+          </div></article>
+          <article class="card"><div class="pad">
+            <h3>Clases abstractas: contrato de pilotos</h3>
+            <p>Las clases abstractas definen métodos que las subclases deben implementar, asegurando un comportamiento consistente.</p>
+            <div class="code"><button class="copy" onclick="copyCode(this)">Copiar</button><span class="lang">Python</span>
+<pre class="hl">
+<span class="kw">from</span> abc <span class="kw">import</span> ABC, abstractmethod
+
+<span class="kw">class</span> <span class="fn">Piloto</span>(ABC):
+    <span class="kw">@abstractmethod</span>
+    <span class="kw">def</span> <span class="fn">conducir</span>(self): ...
+
+<span class="kw">class</span> <span class="fn">PilotoF1</span>(Piloto):
+    <span class="kw">def</span> <span class="fn">conducir</span>(self):
+        print(<span class="st">"Conduciendo monoplaza a 300 km/h"</span>)
+
+<span class="kw">class</span> <span class="fn">PilotoRally</span>(Piloto):
+    <span class="kw">def</span> <span class="fn">conducir</span>(self):
+        print(<span class="st">"Derrapando en grava y barro"</span>)
+
+<span class="kw">def</span> <span class="fn">prueba</span>(p: Piloto):
+    p.conducir()
+
+<span class="fn">prueba</span>(PilotoF1())
+<span class="fn">prueba</span>(PilotoRally())
+</pre></div>
+            <div class="callout f1"><strong>F1:</strong> La ABC es como el reglamento: cada piloto debe cumplir su rol.</div>
+          </div></article>
+        </div>
+      </section>
+
+      <!-- LIBRERÍAS -->
+      <section id="librerias" class="section">
+        <h2>4) Librerías poderosas para Datos e IA</h2>
+        <p class="sub">Estas son tus boxes: herramientas especializadas para cada necesidad.</p>
+        <table>
+          <thead><tr><th>Familia</th><th>Librerías</th><th>Uso típico</th><th>Snippet</th></tr></thead>
+          <tbody>
+            <tr><td>Numérico</td><td>NumPy, SciPy</td><td>Álgebra, señales, optimización</td><td><code>np.dot(a,b)</code></td></tr>
+            <tr><td>Tabular</td><td>Pandas, Polars, DuckDB</td><td>ETL, SQL embebido, rendimiento</td><td><code>df.groupby("clase").mean()</code></td></tr>
+            <tr><td>Visual</td><td>Matplotlib, Seaborn</td><td>Gráficas y correlaciones</td><td><code>plt.plot(x,y)</code></td></tr>
+            <tr><td>ML clásico</td><td>scikit‑learn, XGBoost</td><td>Modelado y validación</td><td><code>cross_val_score(model,X,y)</code></td></tr>
+            <tr><td>DL</td><td>TensorFlow, PyTorch</td><td>Redes neuronales</td><td><code>nn.Linear(10,1)</code></td></tr>
+            <tr><td>NLP</td><td>spaCy, NLTK</td><td>Tokenización, NER</td><td><code>nlp("Hola IA")</code></td></tr>
+          </tbody>
+        </table>
+
+        <div class="grid grid-2" style="margin-top:18px">
+          <article class="card"><div class="pad">
+            <h3>Pipeline reproducible (scikit‑learn)</h3>
+            <div class="code"><button class="copy" onclick="copyCode(this)">Copiar</button><span class="lang">Python</span>
+<pre class="hl">
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> train_test_split
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LogisticRegression
+<span class="kw">from</span> sklearn.pipeline <span class="kw">import</span> Pipeline
+
+df = pd.DataFrame({<span class="st">"x1"</span>:[1,2,3,4], <span class="st">"x2"</span>:[.1,.2,.3,.6], <span class="st">"y"</span>:[0,0,1,1]})
+X,y = df[[<span class="st">"x1"</span>,<span class="st">"x2"</span>]], df[<span class="st">"y"</span>]
+
+pipe = Pipeline([(<span class="st">"scaler"</span>, StandardScaler()),
+                 (<span class="st">"clf"</span>, LogisticRegression())])
+Xtr,Xte,ytr,yte = train_test_split(X,y,test_size=0.5,random_state=42)
+pipe.fit(Xtr,ytr); print(<span class="st">"Score:"</span>, pipe.score(Xte,yte))
+</pre></div>
+          </div></article>
+
+          <article class="card"><div class="pad">
+            <h3>EDA mínimo (Pandas)</h3>
+            <div class="code"><button class="copy" onclick="copyCode(this)">Copiar</button><span class="lang">Python</span>
+<pre class="hl">
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+df = pd.DataFrame({<span class="st">"a"</span>:[1,2,3,4,5], <span class="st">"b"</span>:[2,3,3,5,8]})
+print(df.describe())
+print(df.corr(numeric_only=<span class="kw">True</span>))
+</pre></div>
+            <div class="callout bat"><strong>Batman:</strong> El EDA es tu “modo detective”: primero entiendes la escena, luego decides la acción.</div>
+          </div></article>
+        </div>
+      </section>
+
+      <!-- EJERCICIOS -->
+      <section id="ejercicios" class="section">
+        <h2>5) Ejercicios didácticos (Tkinter & Pygame)</h2>
+        <div class="grid grid-2">
+          <article class="card"><div class="pad">
+            <h3>Conversor °C → °F (Tkinter)</h3>
+            <div class="code"><button class="copy" onclick="copyCode(this)">Copiar</button><span class="lang">Python</span>
+<pre class="hl">
+<span class="kw">import</span> tkinter <span class="kw">as</span> tk
+root = tk.Tk(); root.title(<span class="st">"°C → °F"</span>)
+e = tk.Entry(root); e.pack(padx=8,pady=8)
+out = tk.Label(root,text=<span class="st">"Resultado: --"</span>); out.pack(padx=8,pady=8)
+<span class="kw">def</span> <span class="fn">go</span>():
+    c = float(e.get()); f = c*9/5 + 32
+    out.config(text=f<span class="st">"Resultado: {f:.1f} °F"</span>)
+tk.Button(root,text=<span class="st">"Calcular"</span>,command=go).pack(padx=8,pady=8)
+root.mainloop()
+</pre></div>
+            <!-- Comentario eliminado para mantener narrativa fluida -->
+          </div></article>
+
+          <article class="card"><div class="pad">
+            <h3>Mini‑juego (Pygame)</h3>
+            <div class="code"><button class="copy" onclick="copyCode(this)">Copiar</button><span class="lang">Python</span>
+<pre class="hl">
+<span class="kw">import</span> pygame, sys, random
+pygame.init()
+W,H=900,520; win=pygame.display.set_mode((W,H)); clock=pygame.time.Clock()
+player = pygame.Rect(80,H//2,44,44); dx=0; speed=6; score=0
+targets=[pygame.Rect(random.randrange(200,W-40),random.randrange(40,H-40),20,20) <span class="kw">for</span> _ <span class="kw">in</span> range(7)]
+<span class="kw">while True</span>:
+  <span class="kw">for</span> e <span class="kw">in</span> pygame.event.get():
+    <span class="kw">if</span> e.type==pygame.QUIT: pygame.quit(); sys.exit()
+    <span class="kw">elif</span> e.type==pygame.KEYDOWN:
+      <span class="kw">if</span> e.key==pygame.K_LEFT: dx=-speed
+      <span class="kw">if</span> e.key==pygame.K_RIGHT: dx=speed
+    <span class="kw">elif</span> e.type==pygame.KEYUP: dx=0
+  player.x = max(0,min(W-player.width, player.x+dx))
+  <span class="kw">for</span> t <span class="kw">in</span> targets[:]:
+    <span class="kw">if</span> player.colliderect(t): targets.remove(t); score += 1
+  win.fill((10,10,14))
+  pygame.draw.rect(win,(255,20,60),player)
+  <span class="kw">for</span> t <span class="kw">in</span> targets: pygame.draw.rect(win,(255,215,0),t)
+  pygame.display.set_caption(f<span class="st">"Score: {score}"</span>)
+  pygame.display.flip(); clock.tick(60)
+</pre></div>
+            <div class="callout f1"><strong>F1:</strong> 60 FPS = ritmo de carrera constante; colisiones = paradas estratégicas.</div>
+          </div></article>
+        </div>
+      </section>
+
+      <!-- MANUAL -->
+      <section id="manual" class="section">
+        <h2>6) Manual de supervivencia académica</h2>
+        <div class="grid grid-2">
+          <article class="card"><div class="pad">
+            <h3>Hábitos clave</h3>
+            <ul>
+              <li>Pomodoro 50/10 + 3 objetivos del día.</li>
+              <li>Prototipa en notebooks → consolida en scripts → prueba con <code>pytest</code>.</li>
+              <li>Usa <code>git</code> con commits pequeños y mensajes claros.</li>
+            </ul>
+            <div class="callout bat"><strong>Batman:</strong> Registro de cambios = bitácora de casos. Si algo falla, rastreas el commit culpable.</div>
+          </div></article>
+          <article class="card"><div class="pad">
+            <h3>Comandos de arranque</h3>
+            <ul>
+              <li><code>python -m venv .venv</code> → crear entorno</li>
+              <li>Activar (Win): <code>.venv\Scripts\activate</code></li>
+              <li><code>pip install paquete</code></li>
+              <li><code>python mi_script.py</code></li>
+            </ul>
+            <!-- Comentario eliminado para mantener narrativa fluida -->
+          </div></article>
+        </div>
+        <p>En nuestra carrera de ingeniería, Python ha sido fundamental para desarrollar simuladores de sistemas dinámicos, analizar bases de datos experimentales y construir modelos predictivos de fallas. Estas experiencias demuestran la utilidad de dominar Python para resolver problemas complejos en el ámbito de datos e&nbsp;IA.</p>
+        <p>Para hacer este blog más didáctico y visual, complementa el texto con material multimedia. Por ejemplo, incluye un diagrama que muestre la herencia entre las clases <code>Vehiculo</code> y <code>CocheF1</code>, un GIF del mini‑juego de&nbsp;Pygame en acción, o los logos de librerías como&nbsp;NumPy, Pandas y Matplotlib.</p>
+      </section>
+
+      <!-- GLOSARIO -->
+      <section id="glosario" class="section">
+        <h2>7) Glosario (tap para ir desde el texto)</h2>
+        <p class="sub">Si en el contenido tocas una palabra del glosario, saltas aquí automáticamente.</p>
+        <div class="grid grid-3" id="glossary-list">
+          <article class="card" id="g-kernel"><div class="pad"><h3>Kernel</h3><p>Proceso que ejecuta tu código (IPython/Jupyter). El “motor” que mantiene vivo el notebook.</p><span class="gloss-chip">#Jupyter</span></div></article>
+          <article class="card" id="g-entorno"><div class="pad"><h3>Entorno</h3><p>Conjunto aislado de paquetes para un proyecto. Evita “choques” entre dependencias.</p><span class="gloss-chip">#venv</span></div></article>
+          <article class="card" id="g-pipeline"><div class="pad"><h3>Pipeline</h3><p>Secuencia reproducible de pasos (limpieza → features → modelo → evaluación).</p><span class="gloss-chip">#ML</span></div></article>
+          <article class="card" id="g-overfitting"><div class="pad"><h3>Overfitting</h3><p>Modelo que memoriza en lugar de generalizar. Brilla en prácticas, falla el domingo.</p><span class="gloss-chip">#generalización</span></div></article>
+          <article class="card" id="g-abc"><div class="pad"><h3>ABC</h3><p>Abstract Base Class: define contratos de métodos para asegurar consistencia.</p><span class="gloss-chip">#POO</span></div></article>
+          <article class="card" id="g-etl"><div class="pad"><h3>ETL</h3><p>Extraer, Transformar, Cargar datos. Tu box de limpieza antes de la carrera.</p><span class="gloss-chip">#Datos</span></div></article>
+          <article class="card" id="g-vectorizacion"><div class="pad"><h3>Vectorización</h3><p>Transformación de datos (palabras, características) en vectores numéricos para entrenar modelos. Como convertir una vuelta en telemetría.</p><span class="gloss-chip">#ML</span></div></article>
+          <article class="card" id="g-regularizacion"><div class="pad"><h3>Regularización</h3><p>Método para evitar <a href="#g-overfitting">overfitting</a> penalizando complejidad. Un lastre que mantiene el monoplaza estable.</p><span class="gloss-chip">#ML</span></div></article>
+          <article class="card" id="g-backprop"><div class="pad"><h3>Backprop</h3><p>Algoritmo de retropropagación del error en redes neuronales. Ajusta los pesos como un ingeniero afinando el alerón.</p><span class="gloss-chip">#DL</span></div></article>
+          <article class="card" id="g-tokenizacion"><div class="pad"><h3>Tokenización</h3><p>Dividir texto en unidades (tokens) para procesar lenguaje natural. Señalizar curva por curva en tu pista de datos.</p><span class="gloss-chip">#NLP</span></div></article>
+        </div>
+      </section>
+
+      <!-- PROYECTOS -->
+      <section id="proyectos" class="section">
+        <h2>8) Proyectos de Datos e IA</h2>
+        <p class="sub">Lleva tu conocimiento de Python y librerías al taller: proyectos que unen F1, Batman y análisis de datos reales.</p>
+        <!-- Imagen de apoyo eliminada -->
+        <div class="grid grid-2">
+          <article class="card"><div class="pad">
+            <h3>Análisis de telemetría de F1</h3>
+            <p>Usa Pandas y Matplotlib para analizar el ritmo de vuelta de un monoplaza. ¿Cómo evoluciona la velocidad en cada sector? ¿Qué variables influyen en la degradación de neumáticos? Como el ingeniero de pista, conviertes datos crudos en estrategia.</p>
+            <div class="code"><button class="copy" onclick="copyCode(this)">Copiar</button><span class="lang">Python</span>
+<pre class="hl">
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+laps = pd.read_csv(<span class="st">"laps_f1.csv"</span>)  <span class="cm"># dataset ficticio</span>
+laps["lap_time"] = pd.to_timedelta(laps["lap_time"])
+print(laps.groupby(<span class="st">"sector"</span>)[<span class="st">"lap_time"</span>].mean())
+</pre></div>
+            <div class="callout f1"><strong>F1:</strong> La telemetría es tu sensor; al analizarla decides cuándo entrar a pits.</div>
+          </div></article>
+          <article class="card"><div class="pad">
+            <h3>Clasificación de villanos en Gotham</h3>
+            <p>Con scikit‑learn, construye un modelo que clasifique villanos según su peligrosidad. Entrenas con características como <em>ingenio</em>, <em>recursos</em> y <em>motivación</em>; evalúas precisión y evitas <a href="#g-overfitting">overfitting</a> con regularización.</p>
+            <div class="code"><button class="copy" onclick="copyCode(this)">Copiar</button><span class="lang">Python</span>
+<pre class="hl">
+<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LogisticRegression
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">from</span> sklearn.pipeline <span class="kw">import</span> Pipeline
+pipe = Pipeline([( "scaler", StandardScaler() ),
+                 ( "clf", LogisticRegression() )])
+pipe.fit(X_train, y_train)
+print("Peligrosidad predicha:", pipe.predict(X_test[:3]))
+</pre></div>
+            <div class="callout bat"><strong>Batman:</strong> El modelo es tu detective: aprende de casos pasados para anticipar amenazas.</div>
+          </div></article>
+        </div>
+        <!-- Comentario eliminado -->
+      </section>
+
+      <!-- ACERTIJOS -->
+      <section id="acertijos" class="section">
+        <h2>9) Acertijos y desafíos interactivos</h2>
+        <p class="sub">Pon a prueba tu ingenio con estos acertijos de programación, Fórmula&nbsp;1 y Batman. Haz clic en cada uno para ver la respuesta.</p>
+        <div class="grid grid-1">
+          <div class="card"><div class="pad">
+            <h3>Reto&nbsp;1: ¿Qué paradigma soy?</h3>
+            <p>Es como el Batimóvil: un único chasis con motor y ruedas bien definidas; reusa piezas y encapsula su poder. ¿Qué paradigma describe?</p>
+            <details class="riddle"><summary class="cta-small">Mostrar respuesta</summary>
+              <div class="riddle-answer"><p><strong>Respuesta:</strong> La programación orientada a objetos (POO). Como un monoplaza, combina chasis (clase) con módulos y métodos.</p></div>
+            </details>
+          </div></div>
+          <div class="card"><div class="pad">
+            <h3>Reto&nbsp;2: Telemetría misteriosa</h3>
+            <p>En una carrera de F1 tienes tres sensores: <code>a</code>, <code>b</code> y <code>c</code>. Si <code>a + b = c</code> y <code>b + c = a</code>, ¿qué valores pueden tener para que el monoplaza siga en pista? (pista: números).</p>
+            <details class="riddle"><summary class="cta-small">Mostrar respuesta</summary>
+              <div class="riddle-answer"><p><strong>Respuesta:</strong> La única solución real es <code>a = b = c = 0</code>. Como en un balance de fuerzas, todas las lecturas deben compensarse entre sí.</p></div>
+            </details>
+          </div></div>
+          <div class="card"><div class="pad">
+            <h3>Reto&nbsp;3: Código cifrado</h3>
+            <p>Observa el siguiente código y adivina qué hace antes de verlo correr. ¿A qué se refiere <code>bat_signal()</code> en términos de control de flujo?</p>
+            <div class="code"><button class="copy" onclick="copyCode(this)">Copiar</button><span class="lang">Python</span>
+<pre class="hl">
+<span class="kw">def</span> <span class="fn">bat_signal</span>(n):
+    <span class="kw">if</span> n &lt;= 1: <span class="kw">return</span> 1
+    <span class="kw">return</span> n * <span class="fn">bat_signal</span>(n-1)
+</pre></div>
+            <details class="riddle"><summary class="cta-small">Mostrar respuesta</summary>
+              <div class="riddle-answer"><p><strong>Respuesta:</strong> Calcula un factorial de <code>n</code>. Recursividad pura: la función se llama a sí misma hasta llegar a 1.</p></div>
+            </details>
+          </div></div>
+        </div>
+        <div class="grid grid-1">
+          <div class="card"><div class="pad">
+            <h3>Reto&nbsp;4: Completa el código</h3>
+            <p>¿Cómo se define una función en Python? Escribe la palabra clave adecuada:</p>
+            <input type="text" id="reto4_input" class="interactive-input" placeholder="Palabra clave…">
+            <button class="cta-small" type="button" onclick="checkReto4()">Comprobar</button>
+            <p id="reto4_result" class="quiz-result"></p>
+          </div></div>
+          <div class="card"><div class="pad">
+            <h3>Reto&nbsp;5: Relaciona paradigmas y analogías</h3>
+            <p>Selecciona la analogía correcta para cada paradigma:</p>
+            <div style="display:grid;gap:12px;">
+              <div>
+                <label>Imperativo:</label>
+                <select id="match_imperativo" class="interactive-select">
+                  <option value=""></option>
+                  <option value="pit_stop">Pit‑stop</option>
+                  <option value="bat_cueva">Baticueva</option>
+                  <option value="telemetria">Telemetría</option>
+                  <option value="detective">Modo&nbsp;detective</option>
+                </select>
+              </div>
+              <div>
+                <label>Declarativo:</label>
+                <select id="match_declarativo" class="interactive-select">
+                  <option value=""></option>
+                  <option value="pit_stop">Pit‑stop</option>
+                  <option value="bat_cueva">Baticueva</option>
+                  <option value="telemetria">Telemetría</option>
+                  <option value="detective">Modo&nbsp;detective</option>
+                </select>
+              </div>
+              <div>
+                <label>Funcional:</label>
+                <select id="match_funcional" class="interactive-select">
+                  <option value=""></option>
+                  <option value="pit_stop">Pit‑stop</option>
+                  <option value="bat_cueva">Baticueva</option>
+                  <option value="telemetria">Telemetría</option>
+                  <option value="detective">Modo&nbsp;detective</option>
+                </select>
+              </div>
+              <div>
+                <label>POO:</label>
+                <select id="match_poo" class="interactive-select">
+                  <option value=""></option>
+                  <option value="pit_stop">Pit‑stop</option>
+                  <option value="bat_cueva">Baticueva</option>
+                  <option value="telemetria">Telemetría</option>
+                  <option value="detective">Modo&nbsp;detective</option>
+                </select>
+              </div>
+            </div>
+            <button class="cta-small" type="button" onclick="checkMatch()">Comprobar</button>
+            <p id="match_result" class="quiz-result"></p>
+          </div></div>
+        </div>
+        <!-- Comentario eliminado -->
+      </section>
+
+      <!-- QUIZ -->
+      <section id="quiz" class="section">
+        <h2>10) Quiz interactivo</h2>
+        <p class="sub">Pon a prueba tus conocimientos con este quiz estilo Duolingo: selecciona la respuesta correcta y comprueba tu puntuación.</p>
+        <div id="quiz-form">
+          <div class="quiz-question">
+            <h3>Pregunta&nbsp;1: Paradigma funcional</h3>
+            <p>¿Cuál de los siguientes paradigmas se centra en la composición de funciones puras y evita cambiar el estado global?</p>
+            <div class="quiz-options">
+              <label><input type="radio" name="q1" value="imperativo"> Imperativo</label>
+              <label><input type="radio" name="q1" value="orientado"> Orientado a objetos</label>
+              <label><input type="radio" name="q1" value="funcional"> Funcional</label>
+            </div>
+          </div>
+          <div class="quiz-question">
+            <h3>Pregunta&nbsp;2: Control de flujo</h3>
+            <p>¿Qué estructura repetiría un bloque hasta que el sensor de vueltas marque el final de la carrera?</p>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2" value="for"> Un bucle <code>for</code></label>
+              <label><input type="radio" name="q2" value="while"> Un bucle <code>while</code></label>
+              <label><input type="radio" name="q2" value="if"> Una instrucción <code>if</code></label>
+            </div>
+          </div>
+          <div class="quiz-question">
+            <h3>Pregunta&nbsp;3: Herencia</h3>
+            <p>En POO, si el Batimóvil hereda de la clase <em>Vehículo</em>, ¿qué concepto describe esta relación?</p>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3" value="composicion"> Composición</label>
+              <label><input type="radio" name="q3" value="herencia"> Herencia</label>
+              <label><input type="radio" name="q3" value="agregacion"> Agregación</label>
+            </div>
+          </div>
+          <button class="cta-small" type="button" onclick="checkQuiz()">Verificar respuestas</button>
+          <div id="quiz-result" class="quiz-result"></div>
+        </div>
+      </section>
+
+      <!-- CRÉDITOS -->
+      <section id="creditos" class="section">
+        <h2>11) Conclusión y créditos</h2>
+        <p>Con una base sólida (paradigmas, estructurada, POO) y un box de librerías (Datos e IA), puedes pasar de prototipos a producción con la precisión de un equipo de F1 y la disciplina del Caballero Oscuro.</p>
+        <hr class="gradient">
+        <p class="credits">Creado por: <strong>BANDA CORREA JUAN DANIEL</strong> · <strong>ALFONSO SALAZAR FLORES</strong></p>
+        <!-- Comentario eliminado -->
+      </section>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-info">Fundamentos de algoritmos · Grupo IDIA 222</div>
+  </div>
+</footer>
+
+<script>
+// ===== Smooth scroll + active nav =====
+const navLinks = document.querySelectorAll('#top-nav a, .toc a');
+const sections = [...navLinks].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+function setActive(){
+  const y = window.scrollY + 100;
+  let current = sections[0].id;
+  for(const s of sections){ if(s.offsetTop <= y) current = s.id; }
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+current));
+}
+window.addEventListener('scroll', setActive); setActive();
+navLinks.forEach(a=>a.addEventListener('click', e => {
+  e.preventDefault(); document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+}));
+
+// ===== Copy buttons in code =====
+function copyCode(btn){
+  const pre = btn.parentElement.querySelector('pre');
+  navigator.clipboard.writeText(pre.textContent).then(()=>{
+    const o=btn.textContent; btn.textContent="¡Copiado!"; setTimeout(()=>btn.textContent=o,900);
+  });
+}
+window.copyCode = copyCode;
+
+// ===== Glossary auto-linker =====
+const GLOSSARY = {
+  "Kernel":"g-kernel",
+  "kernel":"g-kernel",
+  "Entorno":"g-entorno",
+  "entorno":"g-entorno",
+  "Pipeline":"g-pipeline",
+  "pipeline":"g-pipeline",
+  "Overfitting":"g-overfitting",
+  "overfitting":"g-overfitting",
+  "ABC":"g-abc",
+  "ETL":"g-etl",
+  "etl":"g-etl"
+  ,"Vectorización":"g-vectorizacion"
+  ,"vectorización":"g-vectorizacion"
+  ,"vectorizacion":"g-vectorizacion"
+  ,"Regularización":"g-regularizacion"
+  ,"regularización":"g-regularizacion"
+  ,"regularizacion":"g-regularizacion"
+  ,"Backprop":"g-backprop"
+  ,"backprop":"g-backprop"
+  ,"Tokenización":"g-tokenizacion"
+  ,"tokenización":"g-tokenizacion"
+  ,"tokenizacion":"g-tokenizacion"
+};
+// skip tags that should not be searched or linkified
+const SKIP_TAGS = new Set(["CODE","PRE","SCRIPT","STYLE","A","BUTTON","MARK"]);
+function linkifyGlossary(root){
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(n){
+      if(!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      const p = n.parentElement; if(!p || SKIP_TAGS.has(p.tagName)) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  const terms = Object.keys(GLOSSARY).sort((a,b)=>b.length-a.length).join("|");
+  const rx = new RegExp("\\b(" + terms.replace(/[.*+?^${}()|[\]\\]/g,"\\$&") + ")\\b","g");
+  const nodes = [];
+  while(walker.nextNode()) nodes.push(walker.currentNode);
+  for(const n of nodes){
+    const txt = n.nodeValue;
+    if(!rx.test(txt)) continue;
+    const frag = document.createDocumentFragment();
+    let last = 0; txt.replace(rx,(m,term,off)=>{
+      if(off>last) frag.appendChild(document.createTextNode(txt.slice(last,off)));
+      const a = document.createElement("a");
+      a.href = "#"+GLOSSARY[term];
+      a.textContent = m;
+      a.title = "Ir al glosario: " + m;
+      a.style.textDecoration = "underline dotted";
+      frag.appendChild(a);
+      last = off + m.length;
+      return m;
+    });
+    if(last < txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
+    n.parentNode.replaceChild(frag,n);
+  }
+}
+linkifyGlossary(document.getElementById("content"));
+
+// ===== Simple site search (highlights) =====
+const input = document.getElementById('siteSearch');
+const count = document.getElementById('searchCount');
+let marks = [];
+function clearMarks(){
+  for(const m of marks){ const t = document.createTextNode(m.textContent); m.replaceWith(t); }
+  marks = [];
+}
+function highlight(root, q){
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(n){
+      if(!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      const p = n.parentElement; if(!p || SKIP_TAGS.has(p.tagName)) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  // Permitir búsquedas de varias palabras: divide la consulta por espacios y crea un patrón que coincida con cualquiera de las palabras.
+  // Filtra palabras vacías, artículos y letras aisladas para evitar resaltar sólo una letra.
+  const stop = new Set(['y','e','el','la','los','las','un','una','unos','unas','en','de','al','del']);
+  const words = q.split(/\s+/).filter(w => w && !stop.has(w.toLowerCase()) && w.length > 1);
+  const pattern = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|");
+  const rx = new RegExp(pattern, "ig");
+  let hits = 0; const nodes = [];
+  while(walker.nextNode()) nodes.push(walker.currentNode);
+  for(const n of nodes){
+    const s = n.nodeValue; let m; let last=0; let frag=null;
+    while((m = rx.exec(s))){
+      frag = frag || document.createDocumentFragment();
+      if(m.index>last) frag.appendChild(document.createTextNode(s.slice(last,m.index)));
+      const mark = document.createElement("mark"); mark.textContent = m[0];
+      marks.push(mark); frag.appendChild(mark); last = m.index + m[0].length; hits++;
+    }
+    if(frag){ if(last<s.length) frag.appendChild(document.createTextNode(s.slice(last))); n.parentNode.replaceChild(frag,n); }
+  }
+  return hits;
+}
+// Enhanced search: highlight, count and scroll to first result
+if (input && count) {
+input.addEventListener('input', () => {
+  clearMarks();
+  const q = input.value.trim();
+  if(!q){
+    count.textContent = "0";
+    return;
+  }
+  count.textContent = String(highlight(document.getElementById('content'), q));
+  // smooth scroll to the first match if any
+  if(marks.length > 0){
+    marks[0].scrollIntoView({behavior:'smooth', block:'center'});
+  }
+});
+// Allow pressing Enter to trigger search without submitting the page
+input.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    clearMarks();
+    const q = input.value.trim();
+    if(!q){
+      count.textContent = "0";
+      return;
+    }
+    count.textContent = String(highlight(document.getElementById('content'), q));
+    if(marks.length > 0){
+      marks[0].scrollIntoView({behavior:'smooth', block:'center'});
+    }
+    }
+});
+}
+
+// ===== Riddle toggle =====
+function toggleRiddle(btn){
+  // Busca la respuesta dentro del mismo bloque que el botón
+  let container = btn.parentElement;
+  const ans = container.querySelector('.riddle-answer');
+  if(!ans) return;
+  const showing = ans.style.display === 'block';
+  ans.style.display = showing ? 'none' : 'block';
+  btn.textContent = showing ? 'Mostrar respuesta' : 'Ocultar respuesta';
+}
+window.toggleRiddle = toggleRiddle;
+
+// ===== Quiz checker =====
+function checkQuiz(){
+  let score = 0;
+  const form = document.getElementById('quiz-form');
+  const q1 = form.querySelector('input[name="q1"]:checked');
+  const q2 = form.querySelector('input[name="q2"]:checked');
+  const q3 = form.querySelector('input[name="q3"]:checked');
+  if(q1 && q1.value === 'funcional') score++;
+  if(q2 && q2.value === 'while') score++;
+  if(q3 && q3.value === 'herencia') score++;
+  const result = document.getElementById('quiz-result');
+  result.textContent = `Tu puntuación: ${score}/3`;
+  if(score === 3){ result.textContent += ' 🚀 ¡Excelente!'; }
+  else if(score === 2){ result.textContent += ' ⭐️ Muy bien.'; }
+  else { result.textContent += ' 💡 Sigue practicando.'; }
+}
+window.checkQuiz = checkQuiz;
+
+// ===== Ejercicios interactivos (Reto 4 y Reto 5) =====
+function checkReto4(){
+  const val = document.getElementById('reto4_input').value.trim().toLowerCase();
+  const result = document.getElementById('reto4_result');
+  if(!val){
+    result.textContent = '';
+    return;
+  }
+  if(val === 'def'){
+    result.textContent = '✔ Correcto: def define una función en Python.';
+    result.style.color = getComputedStyle(document.documentElement).getPropertyValue('--green');
+  } else {
+    result.textContent = '✘ No exactamente… piensa en la palabra reservada de tres letras que inicia una función.';
+    result.style.color = getComputedStyle(document.documentElement).getPropertyValue('--orange');
+  }
+}
+window.checkReto4 = checkReto4;
+
+function checkMatch(){
+  let score = 0;
+  const selections = {
+    imperativo: document.getElementById('match_imperativo').value,
+    declarativo: document.getElementById('match_declarativo').value,
+    funcional: document.getElementById('match_funcional').value,
+    poo: document.getElementById('match_poo').value
+  };
+  if(selections.imperativo === 'pit_stop') score++;
+  if(selections.declarativo === 'bat_cueva') score++;
+  if(selections.funcional === 'telemetria') score++;
+  if(selections.poo === 'detective') score++;
+  const result = document.getElementById('match_result');
+  if(Object.values(selections).every(v => v)){
+    if(score === 4){
+      result.textContent = '✔ ¡Perfecto! Has conectado todas las analogías.';
+      result.style.color = getComputedStyle(document.documentElement).getPropertyValue('--green');
+    } else {
+      result.textContent = `Aciertos: ${score}/4. Revisa tus elecciones y vuelve a intentarlo.`;
+      result.style.color = getComputedStyle(document.documentElement).getPropertyValue('--orange');
+    }
+  } else {
+    result.textContent = 'Selecciona una opción para cada paradigma.';
+    result.style.color = getComputedStyle(document.documentElement).getPropertyValue('--orange');
+  }
+}
+window.checkMatch = checkMatch;
+
+// ===== Highlight current TOC section initially =====
+setActive();
+</script>
+</body>
+</html>
